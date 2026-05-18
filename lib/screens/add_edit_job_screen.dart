@@ -159,7 +159,7 @@ class _AddEditJobScreenState extends State<AddEditJobScreen> {
           ),
           const SizedBox(height: 16),
           DropdownButtonFormField<String>(
-            value: selectedStatus,
+            initialValue: selectedStatus,
             decoration: const InputDecoration(
               labelText: 'Status',
               border: OutlineInputBorder(),
