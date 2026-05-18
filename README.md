@@ -1,6 +1,6 @@
 # trackhire
 
-Flutter app for tracking job applications, interviews, and follow-ups.
+Flutter app for tracking job applications, interviews, and follow-ups. Users can record their job applications into a clean and organized space.
 
 ## Getting Started
 

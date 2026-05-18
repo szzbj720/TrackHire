@@ -10,6 +10,7 @@ import '../widgets/job_card.dart';
 import '../widgets/stat_card.dart';
 import 'add_edit_job_screen.dart';
 import 'job_detail_screen.dart';
+import 'settings_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -86,6 +87,12 @@ class HomeScreen extends StatelessWidget {
           ? const Center(
         child: CircularProgressIndicator(),
       )
+          : provider.selectedPageIndex == 2
+          ? SettingsScreen(
+        totalApplications: provider.totalApplications,
+        savedApplications: provider.savedCount,
+        applications: provider.applications,
+      )
           : ListView(
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
         children: [
@@ -93,7 +100,8 @@ class HomeScreen extends StatelessWidget {
             provider.selectedPageIndex == 0
                 ? 'Job Application Tracker'
                 : 'Saved Applications',
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+            style:
+            Theme.of(context).textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -105,7 +113,6 @@ class HomeScreen extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyMedium,
           ),
           const SizedBox(height: 20),
-
           SizedBox(
             height: 128,
             child: ListView(
@@ -158,9 +165,7 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
           ),
-
           const SizedBox(height: 24),
-
           TextField(
             decoration: InputDecoration(
               labelText: 'Search applications',
@@ -177,9 +182,7 @@ class HomeScreen extends StatelessWidget {
             ),
             onChanged: provider.setSearchQuery,
           ),
-
           const SizedBox(height: 16),
-
           Text(
             'Status',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -205,9 +208,7 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
           ),
-
           const SizedBox(height: 16),
-
           Text(
             'Materials',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -234,15 +235,14 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
           ),
-
           const SizedBox(height: 24),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 pageTitle,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                style:
+                Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -252,9 +252,7 @@ class HomeScreen extends StatelessWidget {
               ),
             ],
           ),
-
           const SizedBox(height: 12),
-
           if (provider.selectedPageIndex == 0 &&
               provider.applications.isEmpty)
             const EmptyApplicationMessage()
@@ -300,6 +298,11 @@ class HomeScreen extends StatelessWidget {
             icon: Icon(Icons.favorite_border),
             selectedIcon: Icon(Icons.favorite),
             label: 'Saved',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.settings_outlined),
+            selectedIcon: Icon(Icons.settings),
+            label: 'Settings',
           ),
         ],
       ),
