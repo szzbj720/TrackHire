@@ -2,23 +2,26 @@
 
 ![Flutter CI](https://github.com/szzbj720/trackhire/actions/workflows/flutter_ci.yml/badge.svg)
 
-TrackHire is a cross-platform Flutter mobile app that helps job seekers organize job applications, track required materials, save important opportunities, and manage application progress in one clean workspace.
+TrackHire is a cross-platform Flutter job application tracker that helps job seekers organize applications, track required materials, save important opportunities, and manage job search progress in one clean workspace.
 
 ## Overview
 
-Job searching can get messy fast. TrackHire gives users a simple way to keep all job applications in one place, including company details, role information, application status, salary range, location, notes, saved jobs, and required application materials.
+Job searching can get messy fast. TrackHire gives users a structured way to manage job applications, including company details, role information, application status, salary range, location, notes, saved jobs, and required application materials.
 
-The app is built with a clean mobile-first UI, local SQLite persistence, Provider state management, CSV export support, and GitHub Actions CI.
+The app started as a local Flutter application with SQLite persistence and has since been expanded into a backend-connected mobile platform. TrackHire now includes a Flutter frontend, Provider-based state management, a dedicated API service layer, a Node.js and Express REST API, persistent backend SQLite storage, CSV export support, and GitHub Actions CI.
 
 ## Screenshots
 
 ### Home Screen
+
 ![Home Screen](screenshots/home.png)
 
 ### Saved Applications
+
 ![Saved Applications](screenshots/saved.png)
 
 ### Settings
+
 ![Settings](screenshots/settings.png)
 
 ## Features
@@ -29,49 +32,63 @@ The app is built with a clean mobile-first UI, local SQLite persistence, Provide
 - Search applications by company, role, location, salary, or notes
 - Filter applications by status and required materials
 - Track materials such as resume, portfolio, cover letter, application questions, and other documents
-- Store application data locally using SQLite
+- View dashboard stats for total applications, saved jobs, offers, interviews, and rejections
 - Export job application data as a CSV file
 - Share exported CSV files through the native mobile share sheet
-- Clean Material 3 UI with pastel dashboard cards and responsive mobile layouts
-- Organized architecture using models, screens, widgets, providers, services, and database layers
-- GitHub Actions CI workflow for formatting, static analysis, testing, and Android debug build validation
+- Connect the Flutter app to a Node.js and Express REST API
+- Persist backend data using SQLite
+- Handle API connection errors with a user-friendly error state
+- Use a clean Material 3 UI with pastel dashboard cards and responsive mobile layouts
+- Organize code with models, screens, widgets, providers, services, database, and backend layers
+- Validate code quality through GitHub Actions CI for formatting, static analysis, testing, and Android debug APK builds
 
 ## Tech Stack
+
+### Frontend
 
 - Flutter
 - Dart
 - Provider
-- SQLite with sqflite
-- path and path_provider
+- Material 3
+- http
 - csv
 - share_plus
-- Material 3
-- GitHub Actions
+- path_provider
 
-## Project Structure
+### Local Data and App Services
+
+- SQLite with sqflite
+- Local model serialization
+- CSV export service
+- Native share-sheet integration
+
+### Backend
+
+- Node.js
+- Express
+- SQLite
+- CORS
+- REST API
+- JSON request and response handling
+
+### Development Tools
+
+- Git
+- GitHub
+- GitHub Actions CI/CD
+- Android Studio
+- Flutter Analyze
+- Flutter Test
+
+## Architecture
 
 ```txt
-lib/
-  main.dart
-  database/
-    job_database.dart
-  models/
-    job_application.dart
-  providers/
-    application_provider.dart
-  screens/
-    add_edit_job_screen.dart
-    home_screen.dart
-    job_detail_screen.dart
-    settings_screen.dart
-  services/
-    csv_export_service.dart
-  widgets/
-    checklist_checkbox.dart
-    detail_section.dart
-    empty_application_message.dart
-    empty_saved_message.dart
-    empty_search_message.dart
-    job_card.dart
-    materials_section.dart
-    stat_card.dart
+Flutter UI
+  ↓
+Provider State Management
+  ↓
+ApiService
+  ↓
+Node.js / Express REST API
+  ↓
+SQLite Backend Database
