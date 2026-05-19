@@ -39,3 +39,9 @@ build/
 .dart_tool/
 *.apk
 *.aab
+
+# Backend
+backend/node_modules/
+backend/trackhire.db
+backend/*.db
+node_modules/
