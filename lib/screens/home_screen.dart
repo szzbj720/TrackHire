@@ -3,13 +3,13 @@ import 'package:provider/provider.dart';
 
 import '../models/job_application.dart';
 import '../providers/application_provider.dart';
+import '../views/ai_analysis_page.dart';
 import '../widgets/empty_application_message.dart';
 import '../widgets/empty_saved_message.dart';
 import '../widgets/empty_search_message.dart';
 import '../widgets/job_card.dart';
 import '../widgets/stat_card.dart';
 import 'add_edit_job_screen.dart';
-import '../views/ai_analysis_page.dart';
 import 'job_detail_screen.dart';
 import 'settings_screen.dart';
 
@@ -73,12 +73,12 @@ class HomeScreen extends StatelessWidget {
     final List<JobApplication> visibleApplications =
         provider.filteredApplications;
 
-    String pageTitle = provider.selectedPageIndex == 0
+    final String pageTitle = provider.selectedPageIndex == 0
         ? 'Recent Applications'
         : 'Saved Applications';
 
     return Scaffold(
-      appBar: AppBar(title: const Text('TrackHire'), centerTitle: true),
+      appBar: AppBar(title: const Text('TrackHire AI'), centerTitle: true),
       body: provider.isLoading
           ? const Center(child: CircularProgressIndicator())
           : provider.errorMessage != null
