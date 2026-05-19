@@ -51,10 +51,10 @@ class ApplicationProvider extends ChangeNotifier {
 
       final bool matchesSearch =
           application.company.toLowerCase().contains(query) ||
-              application.role.toLowerCase().contains(query) ||
-              application.location.toLowerCase().contains(query) ||
-              application.salaryRange.toLowerCase().contains(query) ||
-              application.notes.toLowerCase().contains(query);
+          application.role.toLowerCase().contains(query) ||
+          application.location.toLowerCase().contains(query) ||
+          application.salaryRange.toLowerCase().contains(query) ||
+          application.notes.toLowerCase().contains(query);
 
       final bool matchesStatusFilter =
           selectedFilter == 'All' || application.status == selectedFilter;
@@ -126,7 +126,7 @@ class ApplicationProvider extends ChangeNotifier {
   Future<void> addApplication(JobApplication newApplication) async {
     try {
       final JobApplication createdApplication =
-      await ApiService.createApplication(newApplication);
+          await ApiService.createApplication(newApplication);
 
       applications.insert(0, createdApplication);
       errorMessage = null;
@@ -138,9 +138,9 @@ class ApplicationProvider extends ChangeNotifier {
   }
 
   Future<void> updateApplication(
-      int index,
-      JobApplication updatedApplication,
-      ) async {
+    int index,
+    JobApplication updatedApplication,
+  ) async {
     if (index < 0 || index >= applications.length) {
       return;
     }
@@ -153,7 +153,7 @@ class ApplicationProvider extends ChangeNotifier {
 
     try {
       final JobApplication savedApplication =
-      await ApiService.updateApplication(id, updatedApplication);
+          await ApiService.updateApplication(id, updatedApplication);
 
       applications[index] = savedApplication;
       errorMessage = null;
@@ -201,7 +201,9 @@ class ApplicationProvider extends ChangeNotifier {
     }
 
     try {
-      final JobApplication updatedApplication = await ApiService.toggleSaved(id);
+      final JobApplication updatedApplication = await ApiService.toggleSaved(
+        id,
+      );
 
       applications[originalIndex] = updatedApplication;
       errorMessage = null;
