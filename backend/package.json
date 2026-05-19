@@ -1,0 +1,22 @@
+{
+  "name": "trackhire-backend",
+  "version": "1.0.0",
+  "description": "REST API backend for the TrackHire Flutter mobile app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "trackhire",
+    "express",
+    "rest-api",
+    "mobile-backend"
+  ],
+  "author": "Selena Zhang",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.3"
+  }
+}

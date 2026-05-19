@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../database/job_database.dart';
 import '../models/job_application.dart';
+import '../services/api_service.dart';
 
 class ApplicationProvider extends ChangeNotifier {
   List<JobApplication> applications = [];
   bool isLoading = true;
+  String? errorMessage;
 
   int selectedPageIndex = 0;
 
@@ -50,10 +51,10 @@ class ApplicationProvider extends ChangeNotifier {
 
       final bool matchesSearch =
           application.company.toLowerCase().contains(query) ||
-          application.role.toLowerCase().contains(query) ||
-          application.location.toLowerCase().contains(query) ||
-          application.salaryRange.toLowerCase().contains(query) ||
-          application.notes.toLowerCase().contains(query);
+              application.role.toLowerCase().contains(query) ||
+              application.location.toLowerCase().contains(query) ||
+              application.salaryRange.toLowerCase().contains(query) ||
+              application.notes.toLowerCase().contains(query);
 
       final bool matchesStatusFilter =
           selectedFilter == 'All' || application.status == selectedFilter;
@@ -108,85 +109,38 @@ class ApplicationProvider extends ChangeNotifier {
 
   Future<void> loadApplications() async {
     isLoading = true;
+    errorMessage = null;
     notifyListeners();
 
-    applications = await JobDatabase.instance.readAllApplications();
-
-    if (applications.isEmpty) {
-      await seedSampleApplications();
-      applications = await JobDatabase.instance.readAllApplications();
+    try {
+      applications = await ApiService.fetchApplications();
+    } catch (error) {
+      errorMessage = error.toString();
+      applications = [];
     }
 
     isLoading = false;
     notifyListeners();
   }
 
-  Future<void> seedSampleApplications() async {
-    final List<JobApplication> sampleApplications = [
-      const JobApplication(
-        company: 'Apple',
-        role: 'iOS Developer',
-        status: 'Applied',
-        dateApplied: 'May 17, 2026',
-        location: 'Cupertino, CA',
-        salaryRange: '\$120k - \$160k',
-        notes: 'Applied through LinkedIn.',
-        hasResume: true,
-        hasPortfolio: true,
-        hasCoverLetter: false,
-        hasApplicationQuestions: true,
-        hasOther: false,
-        isSaved: true,
-      ),
-      const JobApplication(
-        company: 'Robinhood',
-        role: 'Mobile Engineer',
-        status: 'Interviewing',
-        dateApplied: 'May 15, 2026',
-        location: 'Remote',
-        salaryRange: '\$130k - \$170k',
-        notes: 'Need to follow up with recruiter.',
-        hasResume: true,
-        hasPortfolio: true,
-        hasCoverLetter: true,
-        hasApplicationQuestions: true,
-        hasOther: false,
-        isSaved: false,
-      ),
-      const JobApplication(
-        company: 'Duolingo',
-        role: 'Software Engineer',
-        status: 'Rejected',
-        dateApplied: 'May 10, 2026',
-        location: 'Pittsburgh, PA',
-        salaryRange: 'Not listed',
-        notes: 'Keep improving mobile portfolio.',
-        hasResume: true,
-        hasPortfolio: false,
-        hasCoverLetter: false,
-        hasApplicationQuestions: true,
-        hasOther: false,
-        isSaved: false,
-      ),
-    ];
+  Future<void> addApplication(JobApplication newApplication) async {
+    try {
+      final JobApplication createdApplication =
+      await ApiService.createApplication(newApplication);
 
-    for (JobApplication application in sampleApplications) {
-      await JobDatabase.instance.create(application);
+      applications.insert(0, createdApplication);
+      errorMessage = null;
+      notifyListeners();
+    } catch (error) {
+      errorMessage = error.toString();
+      notifyListeners();
     }
   }
 
-  Future<void> addApplication(JobApplication newApplication) async {
-    final int newId = await JobDatabase.instance.create(newApplication);
-
-    applications.insert(0, newApplication.copyWith(id: newId));
-
-    notifyListeners();
-  }
-
   Future<void> updateApplication(
-    int index,
-    JobApplication updatedApplication,
-  ) async {
+      int index,
+      JobApplication updatedApplication,
+      ) async {
     if (index < 0 || index >= applications.length) {
       return;
     }
@@ -197,15 +151,17 @@ class ApplicationProvider extends ChangeNotifier {
       return;
     }
 
-    final JobApplication applicationWithId = updatedApplication.copyWith(
-      id: id,
-    );
+    try {
+      final JobApplication savedApplication =
+      await ApiService.updateApplication(id, updatedApplication);
 
-    await JobDatabase.instance.update(id, applicationWithId);
-
-    applications[index] = applicationWithId;
-
-    notifyListeners();
+      applications[index] = savedApplication;
+      errorMessage = null;
+      notifyListeners();
+    } catch (error) {
+      errorMessage = error.toString();
+      notifyListeners();
+    }
   }
 
   Future<void> deleteApplication(int index) async {
@@ -219,11 +175,16 @@ class ApplicationProvider extends ChangeNotifier {
       return;
     }
 
-    await JobDatabase.instance.delete(id);
+    try {
+      await ApiService.deleteApplication(id);
 
-    applications.removeAt(index);
-
-    notifyListeners();
+      applications.removeAt(index);
+      errorMessage = null;
+      notifyListeners();
+    } catch (error) {
+      errorMessage = error.toString();
+      notifyListeners();
+    }
   }
 
   Future<void> toggleSaved(JobApplication selectedApplication) async {
@@ -233,11 +194,22 @@ class ApplicationProvider extends ChangeNotifier {
       return;
     }
 
-    final JobApplication updatedApplication = selectedApplication.copyWith(
-      isSaved: !selectedApplication.isSaved,
-    );
+    final int? id = selectedApplication.id;
 
-    await updateApplication(originalIndex, updatedApplication);
+    if (id == null) {
+      return;
+    }
+
+    try {
+      final JobApplication updatedApplication = await ApiService.toggleSaved(id);
+
+      applications[originalIndex] = updatedApplication;
+      errorMessage = null;
+      notifyListeners();
+    } catch (error) {
+      errorMessage = error.toString();
+      notifyListeners();
+    }
   }
 
   void setSearchQuery(String value) {

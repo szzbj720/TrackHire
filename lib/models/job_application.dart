@@ -60,7 +60,7 @@ class JobApplication {
       hasPortfolio: hasPortfolio ?? this.hasPortfolio,
       hasCoverLetter: hasCoverLetter ?? this.hasCoverLetter,
       hasApplicationQuestions:
-          hasApplicationQuestions ?? this.hasApplicationQuestions,
+      hasApplicationQuestions ?? this.hasApplicationQuestions,
       hasOther: hasOther ?? this.hasOther,
       isSaved: isSaved ?? this.isSaved,
     );
@@ -85,6 +85,24 @@ class JobApplication {
     };
   }
 
+  Map<String, dynamic> toApiJson() {
+    return {
+      'company': company,
+      'role': role,
+      'status': status,
+      'dateApplied': dateApplied,
+      'location': location,
+      'salaryRange': salaryRange,
+      'notes': notes,
+      'hasResume': hasResume,
+      'hasPortfolio': hasPortfolio,
+      'hasCoverLetter': hasCoverLetter,
+      'hasApplicationQuestions': hasApplicationQuestions,
+      'hasOther': hasOther,
+      'isSaved': isSaved,
+    };
+  }
+
   factory JobApplication.fromDatabaseJson(Map<String, dynamic> json) {
     return JobApplication(
       id: json['id'],
@@ -104,21 +122,44 @@ class JobApplication {
     );
   }
 
+  factory JobApplication.fromApiJson(Map<String, dynamic> json) {
+    return JobApplication(
+      id: json['id'],
+      company: json['company'] ?? '',
+      role: json['role'] ?? '',
+      status: json['status'] ?? 'Applied',
+      dateApplied: json['dateApplied'] ?? 'No date added',
+      location: json['location'] ?? 'No location added',
+      salaryRange: json['salaryRange'] ?? 'No salary added',
+      notes: json['notes'] ?? 'No notes added.',
+      hasResume: json['hasResume'] ?? false,
+      hasPortfolio: json['hasPortfolio'] ?? false,
+      hasCoverLetter: json['hasCoverLetter'] ?? false,
+      hasApplicationQuestions: json['hasApplicationQuestions'] ?? false,
+      hasOther: json['hasOther'] ?? false,
+      isSaved: json['isSaved'] ?? false,
+    );
+  }
+
   int get checklistCompletedCount {
     int count = 0;
 
     if (hasResume) {
       count++;
     }
+
     if (hasPortfolio) {
       count++;
     }
+
     if (hasCoverLetter) {
       count++;
     }
+
     if (hasApplicationQuestions) {
       count++;
     }
+
     if (hasOther) {
       count++;
     }
