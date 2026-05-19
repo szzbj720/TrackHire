@@ -1,4 +1,5 @@
-### IntelliJ IDEA ###
+### IntelliJ IDEA / Android Studio ###
+.idea/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
@@ -27,21 +28,25 @@ bin/
 .vscode/
 
 ### Mac OS ###
-.DS_Storebuild/
-.dart_tool/
+.DS_Store
 
+### Flutter / Dart ###
 build/
 .dart_tool/
+.packages
+.pub-cache/
+.pub/
+.flutter-plugins
+.flutter-plugins-dependencies
 *.apk
 *.aab
 
-build/
-.dart_tool/
-*.apk
-*.aab
-
-# Backend
+### Backend ###
 backend/node_modules/
 backend/trackhire.db
 backend/*.db
 node_modules/
+
+### Environment Files ###
+.env
+backend/.env
