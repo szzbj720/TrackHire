@@ -66,7 +66,8 @@ class _AIAnalysisPageState extends State<AIAnalysisPage> {
 
     final now = DateTime.now();
 
-    final notes = '''
+    final notes =
+        '''
 AI Summary:
 ${analysis.summary}
 
@@ -96,7 +97,7 @@ ${_vm.tailoredResumeBullets.map((b) => '- $b').join('\n')}
       notes: notes,
       hasResume: analysis.recommendedMaterials.contains('Resume'),
       hasPortfolio:
-      analysis.recommendedMaterials.contains('Portfolio') ||
+          analysis.recommendedMaterials.contains('Portfolio') ||
           analysis.recommendedMaterials.contains('GitHub'),
       hasCoverLetter: analysis.recommendedMaterials.contains('Cover Letter'),
       hasApplicationQuestions: false,
@@ -165,9 +166,8 @@ ${_vm.tailoredResumeBullets.map((b) => '- $b').join('\n')}
                   children: [
                     Text(
                       'AI Job Analyzer',
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: Theme.of(context).textTheme.headlineSmall
+                          ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 8),
                     Text(

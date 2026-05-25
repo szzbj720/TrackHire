@@ -40,7 +40,7 @@ class AIViewModel extends ChangeNotifier {
       _analysis = await _aiService.analyzeJobDescription(jobDescription);
     } catch (error) {
       _errorMessage =
-      'Something went wrong while analyzing the job description.';
+          'Something went wrong while analyzing the job description.';
     }
 
     _isLoading = false;
@@ -62,8 +62,7 @@ class AIViewModel extends ChangeNotifier {
     try {
       _tailoredResumeBullets = await _aiService.tailorResume(jobDescription);
     } catch (error) {
-      _resumeTailorError =
-      'Something went wrong while tailoring your resume.';
+      _resumeTailorError = 'Something went wrong while tailoring your resume.';
     }
 
     _isTailoringResume = false;

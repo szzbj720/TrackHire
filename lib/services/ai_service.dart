@@ -10,24 +10,10 @@ class AIService {
       location: 'Not specified',
       salaryRange: 'Not specified',
       summary:
-      'This role focuses on mobile development, APIs, and scalable application design.',
-      requiredSkills: [
-        'Mobile Development',
-        'Flutter',
-        'REST APIs',
-        'Git',
-      ],
-      preferredSkills: [
-        'Firebase',
-        'SQLite',
-        'CI/CD',
-        'Agile',
-      ],
-      recommendedMaterials: [
-        'Resume',
-        'GitHub',
-        'Portfolio',
-      ],
+          'This role focuses on mobile development, APIs, and scalable application design.',
+      requiredSkills: ['Mobile Development', 'Flutter', 'REST APIs', 'Git'],
+      preferredSkills: ['Firebase', 'SQLite', 'CI/CD', 'Agile'],
+      recommendedMaterials: ['Resume', 'GitHub', 'Portfolio'],
       interviewQuestions: [
         'Describe a mobile app you built.',
         'How do you manage state?',
