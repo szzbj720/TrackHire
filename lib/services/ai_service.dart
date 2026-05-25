@@ -2,312 +2,91 @@ import '../models/ai_job_analysis.dart';
 
 class AIService {
   Future<AIJobAnalysis> analyzeJobDescription(String jobDescription) async {
-    await Future.delayed(const Duration(seconds: 2));
-
-    final String lowerText = jobDescription.toLowerCase();
-
-    final String role = _extractRole(jobDescription, lowerText);
-    final String company = _extractCompany(jobDescription);
-    final String location = _extractLocation(jobDescription, lowerText);
-    final String salaryRange = _extractSalary(jobDescription, lowerText);
-    final List<String> requiredSkills = _extractRequiredSkills(lowerText);
-    final List<String> preferredSkills = _extractPreferredSkills(lowerText);
-    final List<String> recommendedMaterials = _recommendMaterials(lowerText);
+    await Future.delayed(const Duration(seconds: 1));
 
     return AIJobAnalysis(
-      company: company,
-      role: role,
-      location: location,
-      salaryRange: salaryRange,
-      requiredSkills: requiredSkills,
-      preferredSkills: preferredSkills,
-      recommendedMaterials: recommendedMaterials,
-      interviewQuestions: _generateInterviewQuestions(role, requiredSkills),
-      summary: _generateSummary(role, location, salaryRange, requiredSkills),
+      company: 'Company Not Detected',
+      role: 'Mobile Developer',
+      location: 'Not specified',
+      salaryRange: 'Not specified',
+      summary:
+      'This role focuses on mobile development, APIs, and scalable application design.',
+      requiredSkills: [
+        'Mobile Development',
+        'Flutter',
+        'REST APIs',
+        'Git',
+      ],
+      preferredSkills: [
+        'Firebase',
+        'SQLite',
+        'CI/CD',
+        'Agile',
+      ],
+      recommendedMaterials: [
+        'Resume',
+        'GitHub',
+        'Portfolio',
+      ],
+      interviewQuestions: [
+        'Describe a mobile app you built.',
+        'How do you manage state?',
+        'How do you connect APIs?',
+      ],
     );
   }
 
-  String _extractRole(String originalText, String lowerText) {
-    final List<String> lines = originalText
-        .split('\n')
-        .map((line) => line.trim())
-        .where((line) => line.isNotEmpty)
-        .toList();
+  Future<List<String>> tailorResume(String jobDescription) async {
+    await Future.delayed(const Duration(seconds: 1));
 
-    for (String line in lines.take(5)) {
-      final String lowerLine = line.toLowerCase();
+    final String lowerText = jobDescription.toLowerCase();
 
-      if (lowerLine.contains('developer') ||
-          lowerLine.contains('engineer') ||
-          lowerLine.contains('analyst') ||
-          lowerLine.contains('designer') ||
-          lowerLine.contains('manager')) {
-        return line;
-      }
+    if (lowerText.contains('ios') || lowerText.contains('swift')) {
+      return [
+        'Developed iOS application features using Swift, SwiftUI, Firebase, and production-ready mobile development practices.',
+        'Resolved Xcode, dependency, deployment target, and third-party SDK integration issues to improve mobile app stability.',
+        'Implemented reliable app functionality with clean UI components, structured state management, and reusable Swift-based architecture.',
+        'Integrated analytics, crash reporting, authentication, and deep-linking tools to support production monitoring and user engagement.',
+        'Tested iOS features through simulator and TestFlight workflows to improve app readiness before release.',
+      ];
     }
 
-    if (lowerText.contains('salesforce') && lowerText.contains('ui')) {
-      return 'Salesforce UI Developer';
+    if (lowerText.contains('android') || lowerText.contains('kotlin')) {
+      return [
+        'Built Android-focused mobile features using Kotlin, modern UI patterns, backend API integration, and persistent local data storage.',
+        'Implemented job tracking workflows with structured models, reusable screens, and reliable state management for a polished user experience.',
+        'Integrated REST API communication, JSON serialization, and database persistence to support full-stack mobile functionality.',
+        'Debugged Android emulator, Gradle, SDK, dependency, and backend connectivity issues to maintain a stable development workflow.',
+        'Improved app readiness through testing, error handling, and production-style build workflows.',
+      ];
     }
 
-    if (lowerText.contains('lightning web components') ||
-        lowerText.contains('lwc')) {
-      return 'Salesforce UI Developer';
-    }
-
-    if (lowerText.contains('frontend') || lowerText.contains('front-end')) {
-      return 'Frontend Developer';
-    }
-
-    if (lowerText.contains('ios developer') ||
-        lowerText.contains('swift developer')) {
-      return 'iOS Developer';
+    if (lowerText.contains('react native')) {
+      return [
+        'Developed cross-platform mobile features using React Native, TypeScript, Expo, reusable components, and persistent state management.',
+        'Built editable mobile workflows with dynamic routing, CRUD operations, confirmation modals, and offline persistence.',
+        'Implemented flexible business logic for user-driven data management, real-time recalculation, and optimized recommendations.',
+        'Designed and tested polished mobile UI across iOS Simulator and Android Emulator to ensure consistent cross-platform behavior.',
+        'Maintained scalable project structure using TypeScript, modular components, and clean state management practices.',
+      ];
     }
 
     if (lowerText.contains('flutter') || lowerText.contains('dart')) {
-      return 'Flutter Developer';
+      return [
+        'Built a full-stack Flutter mobile application using Dart, Provider, Node.js, Express, SQLite, and REST APIs to manage job applications.',
+        'Implemented AI-inspired job description analysis features that extract required skills, recommended materials, role summaries, and interview preparation insights.',
+        'Designed a scalable MVVM-inspired architecture with dedicated models, views, view models, services, and reusable widgets.',
+        'Integrated local persistence, JSON serialization, CSV export, and saved-role management to support practical career tracking workflows.',
+        'Automated development quality checks using GitHub Actions CI/CD, Flutter analyze, test automation, Android APK builds, and artifact upload.',
+      ];
     }
 
-    if (lowerText.contains('backend') || lowerText.contains('back-end')) {
-      return 'Backend Developer';
-    }
-
-    return 'Software Engineer';
-  }
-
-  String _extractCompany(String originalText) {
-    final List<String> lines = originalText
-        .split('\n')
-        .map((line) => line.trim())
-        .where((line) => line.isNotEmpty)
-        .toList();
-
-    for (String line in lines) {
-      final String lowerLine = line.toLowerCase();
-
-      if (lowerLine.startsWith('company:')) {
-        return line.split(':').last.trim();
-      }
-
-      if (lowerLine.startsWith('our client')) {
-        return 'Client Company';
-      }
-    }
-
-    return 'Unknown Company';
-  }
-
-  String _extractLocation(String originalText, String lowerText) {
-    final List<String> lines = originalText
-        .split('\n')
-        .map((line) => line.trim())
-        .where((line) => line.isNotEmpty)
-        .toList();
-
-    for (String line in lines) {
-      final String lowerLine = line.toLowerCase();
-
-      if (lowerLine.startsWith('location:')) {
-        return line
-            .replaceFirst(RegExp(r'Location:', caseSensitive: false), '')
-            .trim();
-      }
-
-      if (lowerLine.startsWith('work location:')) {
-        return line
-            .replaceFirst(RegExp(r'Work Location:', caseSensitive: false), '')
-            .trim();
-      }
-    }
-
-    if (lowerText.contains('tysons')) {
-      return 'Tysons, VA';
-    }
-
-    if (lowerText.contains('on-site') || lowerText.contains('onsite')) {
-      return 'On-site';
-    }
-
-    if (lowerText.contains('remote')) {
-      return 'Remote';
-    }
-
-    if (lowerText.contains('hybrid')) {
-      return 'Hybrid';
-    }
-
-    return 'Not specified';
-  }
-
-  String _extractSalary(String originalText, String lowerText) {
-    final List<String> lines = originalText
-        .split('\n')
-        .map((line) => line.trim())
-        .where((line) => line.isNotEmpty)
-        .toList();
-
-    for (String line in lines) {
-      final String lowerLine = line.toLowerCase();
-
-      if (lowerLine.startsWith('pay:')) {
-        return line
-            .replaceFirst(RegExp(r'Pay:', caseSensitive: false), '')
-            .trim();
-      }
-
-      if (lowerLine.contains('per hour') || lowerLine.contains('/hour')) {
-        return line.trim();
-      }
-
-      if (lowerLine.contains('salary')) {
-        return line.trim();
-      }
-    }
-
-    if (lowerText.contains(r'$40.00') || lowerText.contains('40.00 per hour')) {
-      return 'From \$40.00 per hour';
-    }
-
-    return 'Not specified';
-  }
-
-  List<String> _extractRequiredSkills(String lowerText) {
-    final List<String> skills = [];
-
-    void addSkill(String keyword, String skill) {
-      if (lowerText.contains(keyword) && !skills.contains(skill)) {
-        skills.add(skill);
-      }
-    }
-
-    addSkill('salesforce', 'Salesforce');
-    addSkill('lightning web components', 'Lightning Web Components');
-    addSkill('lwc', 'LWC');
-    addSkill('apex', 'Apex');
-    addSkill('salesforce flows', 'Salesforce Flows');
-    addSkill('declarative tools', 'Declarative Tools');
-    addSkill('figma', 'Figma');
-    addSkill('ui/ux', 'UI/UX');
-    addSkill('responsive', 'Responsive Design');
-    addSkill('mobile', 'Mobile UI');
-    addSkill('desktop', 'Desktop UI');
-    addSkill('rest', 'REST APIs');
-    addSkill('soap', 'SOAP APIs');
-    addSkill('oauth', 'OAuth');
-    addSkill('ci/cd', 'CI/CD');
-    addSkill('git', 'Git');
-    addSkill('agile', 'Agile/Scrum');
-    addSkill('scrum', 'Agile/Scrum');
-    addSkill('aem', 'Adobe Experience Manager');
-    addSkill('financial services cloud', 'Salesforce FSC');
-
-    if (skills.isEmpty) {
-      skills.addAll([
-        'Software Development',
-        'Problem Solving',
-        'Communication',
-      ]);
-    }
-
-    return skills;
-  }
-
-  List<String> _extractPreferredSkills(String lowerText) {
-    final List<String> skills = [];
-
-    void addSkill(String keyword, String skill) {
-      if (lowerText.contains(keyword) && !skills.contains(skill)) {
-        skills.add(skill);
-      }
-    }
-
-    addSkill('financial services', 'Financial Services');
-    addSkill('banking', 'Banking Domain Knowledge');
-    addSkill('high-volume', 'Enterprise Applications');
-    addSkill('external systems', 'External System Integration');
-    addSkill('offshore', 'Offshore Team Collaboration');
-    addSkill('uat', 'UAT Testing');
-    addSkill('release cycles', 'Release Support');
-
-    if (skills.isEmpty) {
-      skills.addAll([
-        'Team Collaboration',
-        'Clean Architecture',
-        'Testing Experience',
-      ]);
-    }
-
-    return skills;
-  }
-
-  List<String> _recommendMaterials(String lowerText) {
-    final List<String> materials = ['Resume', 'Portfolio', 'Cover Letter'];
-
-    if (lowerText.contains('ui') ||
-        lowerText.contains('figma') ||
-        lowerText.contains('design')) {
-      materials.add('UI Project Examples');
-    }
-
-    if (lowerText.contains('salesforce')) {
-      materials.add('Salesforce Project Examples');
-    }
-
-    if (lowerText.contains('github') ||
-        lowerText.contains('git') ||
-        lowerText.contains('ci/cd')) {
-      materials.add('GitHub');
-    }
-
-    return materials;
-  }
-
-  List<String> _generateInterviewQuestions(
-    String role,
-    List<String> requiredSkills,
-  ) {
-    final List<String> questions = [
-      'Tell me about yourself and your background related to $role.',
-      'Describe a project where you translated design requirements into a working user interface.',
-      'How do you make sure a UI is responsive, accessible, and consistent across devices?',
-      'Tell me about a time you worked under a tight deadline.',
-      'How do you collaborate with designers, backend engineers, and external teams?',
+    return [
+      'Built a full-stack mobile application using Flutter, Provider, Node.js, Express, SQLite, and REST APIs to support organized job application tracking.',
+      'Implemented AI-inspired job description analysis features that extract required skills, recommended materials, summaries, and interview preparation insights.',
+      'Designed a scalable MVVM-inspired architecture with dedicated models, views, view models, services, and reusable widgets.',
+      'Integrated local persistence, JSON serialization, CSV export, and saved-role management to support practical career tracking workflows.',
+      'Automated development quality checks using GitHub Actions CI/CD, Flutter analyze, test automation, Android APK builds, and artifact upload.',
     ];
-
-    if (requiredSkills.contains('Salesforce') ||
-        requiredSkills.contains('Lightning Web Components') ||
-        requiredSkills.contains('LWC')) {
-      questions.add(
-        'What experience do you have building Salesforce user interfaces with Lightning Web Components?',
-      );
-    }
-
-    if (requiredSkills.contains('Figma')) {
-      questions.add(
-        'How do you turn Figma designs into pixel-accurate production UI?',
-      );
-    }
-
-    if (requiredSkills.contains('CI/CD')) {
-      questions.add(
-        'What role have you played in release cycles, testing, or CI/CD workflows?',
-      );
-    }
-
-    return questions;
-  }
-
-  String _generateSummary(
-    String role,
-    String location,
-    String salaryRange,
-    List<String> requiredSkills,
-  ) {
-    final String skillsText = requiredSkills.take(5).join(', ');
-
-    return 'This role appears to be a $role position based in $location. '
-        'The role emphasizes $skillsText. '
-        'Strong preparation should include UI development examples, design-to-code experience, responsive interface work, and a clear explanation of how your background matches the required skills. '
-        'Listed compensation: $salaryRange.';
   }
 }

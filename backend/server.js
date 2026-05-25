@@ -2,11 +2,13 @@ const express = require('express');
 const cors = require('cors');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
+const aiRoutes = require('./routes/ai');
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use('/ai', aiRoutes);
 
 const PORT = process.env.PORT || 3000;
 const databasePath = path.join(__dirname, 'trackhire.db');
