@@ -33,8 +33,8 @@ class ApiService {
   }
 
   static Future<JobApplication> createApplication(
-      JobApplication application,
-      ) async {
+    JobApplication application,
+  ) async {
     final Uri url = Uri.parse('$baseUrl/applications');
 
     final http.Response response = await http.post(
@@ -53,9 +53,9 @@ class ApiService {
   }
 
   static Future<JobApplication> updateApplication(
-      int id,
-      JobApplication application,
-      ) async {
+    int id,
+    JobApplication application,
+  ) async {
     final Uri url = Uri.parse('$baseUrl/applications/$id');
 
     final http.Response response = await http.put(
